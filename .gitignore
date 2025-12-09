@@ -1,0 +1,4 @@
+.env
+
+# Google API tokens
+integrations/google/tokens/
