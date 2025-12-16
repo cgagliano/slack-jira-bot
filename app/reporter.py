@@ -65,14 +65,28 @@ class Reporter:
         sheet = service.open("Tickets").sheet1
         sheet.append_row([organization, name, email, issue, status])
         
-    def submit_jira_ticket(self, project, payload):
+    def submit_jira_ticket(self, payload):
         name = payload['name']
         email = payload['email']
-        text = payload['text']
+        request = payload['request']
+        feedback = payload['feedback']
         organization = payload['organization']
         ticket_type = payload['ticket_type']
-        ticket_payload, ticket_url = JiraTicket.format_ser_jira_ticket(ticket_type, text, name, email, organization)
+        origin = payload['origin']
+
+        timestamp = payload['timestamp']
+        ticket_payload, ticket_url = JiraTicket.format_ser_jira_ticket(
+            issue_type=ticket_type,
+            request=request,
+            feedback=feedback,
+            name=name,
+            email=email,
+            organization=organization,
+            origin=origin,
+            timestamp=timestamp
+        )
         # print("TICKET PAYLOAD")
         # pprint(ticket_payload)
-        self.jh.post_jira_ticket(ticket_payload, ticket_url)
+        issue_key = self.jh.post_jira_ticket(ticket_payload, ticket_url)
+        return issue_key
     

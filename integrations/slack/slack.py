@@ -47,7 +47,7 @@ class SlackBot:
 	
 		log("INCOMING PAYLOAD", req.payload)
 
-	def reply_to_alert(ts: str, content: str) -> None:
+	def reply_to_alert(self, ts, content):
 		"""
 		Sends a reply to a specific Slack thread timestamp (ts) in the appropriate channel.
 
@@ -56,9 +56,9 @@ class SlackBot:
 			content (str): The message content to send.
 		"""
 		
-		channel = config.BOT_TESTING_SLACK_CHANNEL_ID if config.TEST_RUN else config.SLACK_CHANNEL_ID
+		channel = config.SLACK_CHANNEL_ID
 		
-		log(f"REPLYING TO CHANNEL: {channel}")
+		print(f"REPLYING TO CHANNEL: {channel}")
 
 		client = WebClient(token=config.SLACK_BOT_TOKEN)
 
@@ -69,10 +69,10 @@ class SlackBot:
 				thread_ts=ts
 			)
 	
-			if result["ok"]: 
-				log("Reply sent successfuly")
+			if result["ok"]:
+				print("Reply sent successfuly")
 			else:
-				log(f"Issue replying to thread! {str(result)}", "error")
+				print(f"Issue replying to thread! {str(result)}", "error")
 		
 		except SlackApiError as e:
-			log(f"Error: {e}")
+			print(f"Error: {e}")

@@ -348,12 +348,12 @@ class Jira_Handler:
 
         response = requests.post(f"{self.jira_domain}/rest/api/3/issue/{issue_key}/transitions", headers={"Content-Type": "application/json"}, auth=self.auth, data=json.dumps(payload))
         
-        def get_jira_boards():
-            url = f"{config.JIRA_BASE_URL}/rest/agile/1.0/board"
-            response = requests.get(url, auth=self.auth)
-            if response.status_code == 200:
-                boards = response.json().get("values", [])
-                return boards
-            else:
-                print(f"Failed to get boards: {response.text}")
-                return []
+    def get_jira_boards():
+        url = f"{config.JIRA_BASE_URL}/rest/agile/1.0/board"
+        response = requests.get(url, auth=self.auth)
+        if response.status_code == 200:
+            boards = response.json().get("values", [])
+            return boards
+        else:
+            print(f"Failed to get boards: {response.text}")
+            return []

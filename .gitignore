@@ -2,3 +2,15 @@
 
 # Google API tokens
 integrations/google/tokens/
+
+# Python cache files
+*cpython*
+
+# macOS system files
+.DS_Store
+
+# Miniconda files (virtual environments)
+Miniconda*
+
+# Test files
+test_jira_ticket.py
