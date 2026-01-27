@@ -47,7 +47,7 @@ class SlackBot:
 	
 		log("INCOMING PAYLOAD", req.payload)
 
-	def reply_to_alert(self, ts, content):
+	def reply_to_alert(self, channel, ts, content):
 		"""
 		Sends a reply to a specific Slack thread timestamp (ts) in the appropriate channel.
 
@@ -55,8 +55,6 @@ class SlackBot:
 			ts (str): The thread timestamp to reply to.
 			content (str): The message content to send.
 		"""
-		
-		channel = config.SLACK_CHANNEL_ID
 		
 		print(f"REPLYING TO CHANNEL: {channel}")
 

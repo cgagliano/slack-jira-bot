@@ -32,17 +32,18 @@ class Formatter:
                 'user_id': user_id,
                 'timestamp': timestamp,
                 'text': event_text,
+                'click_type': 'idea',
                 'ticket_type': 'Task'
             }
 
         if channel == 'serve-ai-issue':
-            payload_origin = payload['event']['attachments'][0]['blocks'][1]['text']['text']
-            payload_origin_array = payload_origin.split('\n')
-            name = payload_origin_array[0].replace("*Submitted by:* ", '')
-            email = payload_origin_array[1].replace("*Email:* <mailto:", '')[:-2].split('|')[0]
-            organization = payload_origin_array[2].replace("*Organization:* ", '')
-            user_id = payload_origin_array[3].replace("*User ID:* ", '')
-            timestamp = payload_origin_array[4].replace("*Timestamp:* ", '')
+            feedback_origin = payload['event']['attachments'][0]['blocks'][1]['text']['text']
+            feedback_origin_array = feedback_origin.split('\n')
+            name = feedback_origin_array[0].replace("*Submitted by:* ", '')
+            email = feedback_origin_array[1].replace("*Email:* <mailto:", '')[:-2].split('|')[0]
+            organization = feedback_origin_array[2].replace("*Organization:* ", '')
+            user_id = feedback_origin_array[3].replace("*User ID:* ", '')
+            timestamp = feedback_origin_array[4].replace("*Timestamp:* ", '')
             issue_type = payload['event']['attachments'][0]['blocks'][3]['text']['text'].split('\n')[1].split(' ')[1]
             issue_urgency = payload['event']['attachments'][0]['blocks'][4]['text']['text'].split('\n')[1].split(' ')[1:][0]
             issue_description = payload['event']['attachments'][0]['blocks'][5]['text']['text'].split('```\n')[1][:-4]
@@ -58,6 +59,7 @@ class Formatter:
                 'issue_urgency': issue_urgency,
                 'issue_description': issue_description,
                 'issue_id': issue_id,
+                'click_type': 'issue',
                 'ticket_type': 'Bug'
             }
 
@@ -88,7 +90,8 @@ class Formatter:
                 'origin': feedback_origin,
                 'issue_type': feedback_pos_neg,
                 'timestamp': feedback_timestamp,
-                'ticket_type': 'Bug'
+                'click_type': 'thumbsdown',
+                'ticket_type': 'Bug' if 'thumbsdown' in feedback_pos_neg.lower() else None
             }
 
 

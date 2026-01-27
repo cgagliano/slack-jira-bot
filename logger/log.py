@@ -40,12 +40,12 @@ def log(message: str, log_level: Literal["debug", "info", "warning", "error", "c
 def log_exception(message: str) -> None:
 		logging.exception(message)
 	
-# # Configure logging
-# logging.basicConfig(
-# 	filename="../docs/app.log",
-# 	level=logging.DEBUG,  # Log level (DEBUG logs everything)
-# 	format="%(asctime)s - %(levelname)s - %(message)s",
-# 	datefmt="%m-%d-%Y %H:%M:%S",
-# )
+# Configure logging
+logging.basicConfig(
+	filename="./docs/app.log",
+	level=logging.DEBUG,  # Log level (DEBUG logs everything)
+	format="%(asctime)s - %(levelname)s - %(message)s",
+	datefmt="%m-%d-%Y %H:%M:%S",
+)
 
 

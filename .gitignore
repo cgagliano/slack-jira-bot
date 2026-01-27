@@ -14,3 +14,12 @@ Miniconda*
 
 # Test files
 test_jira_ticket.py
+
+# Logs
+docs/
+
+# Python cache directories
+__pycache__/
+
+# Roo files
+.roomodes

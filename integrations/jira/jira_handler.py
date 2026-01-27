@@ -16,7 +16,7 @@ class Jira_Handler:
         self.jira_domain = config.JIRA_BASE_URL
         self.jira_email = config.JIRA_EMAIL
         self.jira_api_token = config.JIRA_API_TOKEN
-        self.project_key = config.JIRA_PROJECT_KEY 
+        self.project_key = config.JIRA_SERVE_PROJECT_KEY 
         self.auth = (self.jira_email, self.jira_api_token)
         
     def post_jira_ticket(
@@ -357,3 +357,27 @@ class Jira_Handler:
         else:
             print(f"Failed to get boards: {response.text}")
             return []
+        
+    def assign_ticket(self, issue_key: str, assignee: str) -> bool:
+
+        url = f"{self.jira_domain}/rest/api/3/issue/{issue_key}/assignee"
+        payload = {"accountId": assignee}
+        
+        try:
+            response = requests.put(
+                url, 
+                json=payload, 
+                headers={"Content-Type": "application/json"}, 
+                auth=self.auth
+            )
+            
+            if response.status_code == 204:
+                log.log(f"Successfully assigned {issue_key} to {assignee}")
+                return True
+            else:
+                log.log(f"Failed to assign ticket: {response.status_code} - {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            log.log(f"Error assigning ticket: {e}", "error")
+            return False

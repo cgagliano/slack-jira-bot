@@ -5,18 +5,32 @@ class JiraTicket:
         pass
     
     @staticmethod
-    def format_ser_jira_ticket(issue_type, request, feedback, name, email, origin, organization, timestamp):
+    def format_ser_jira_ticket(**details):
         url = f"{config.JIRA_BASE_URL}/rest/api/3/issue"
                 
-        # log(f"Jira ticket summary: {summary}")
-        
-        body = f"""From: {name} - {email}
-        Organization: {organization}
-        User Request: {request}
-        User Feedback: {feedback}
-        Feedback Origin: {origin}
-        Submitted at: {timestamp}
-        """
+        if details['click_type'] == 'thumbsdown':
+            body = f"""From: {details['name']} - {details['email']}
+            Organization: {details['organization']}
+            User Request: {details['request']}
+            User Feedback: {details['feedback']}
+            Feedback Origin: {details['origin']}
+            Submitted at: {details['timestamp']}
+            """
+        elif details['click_type'] == 'issue':
+            body = f"""From: {details['name']} - {details['email']}
+            Organization: {details['organization']}
+            Issue Type: {details['issue_type']}
+            Issue Urgency: {details['issue_urgency']}
+            Issue Description: {details['issue_description']}
+            Issue ID: {details['issue_id']}
+            Submitted at: {details['timestamp']}
+            """
+        elif details['click_type'] == 'idea':
+            body = f"""From: {details['name']} - {details['email']}
+            Organization: {details['organization']}
+            Idea Description: {details['text']}
+            Submitted at: {details['timestamp']}
+            """
         
         # TEST DATA
         # body = "TEST BODY"
@@ -25,8 +39,8 @@ class JiraTicket:
         payload = {
             "fields": {
                 "project": {"key": "SER"},
-                "issuetype": {"name": issue_type},
-                "summary": "AI Generated Ticket from " + organization,
+                "issuetype": {"name": details['ticket_type']},
+                "summary": f"Auto Generated {details['click_type']} Ticket from {details['organization']}",
                 "description": {
                                 "type": "doc",
                                 "version": 1,
